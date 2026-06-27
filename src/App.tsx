@@ -48,6 +48,19 @@ function ProtectedOnboarding() {
   return <Onboarding />;
 }
 
+// Protected Route for Root (Landing)
+function ProtectedRoot() {
+  const { isAuthenticated } = useAuth();
+  const { profile } = useProfile();
+
+  if (isAuthenticated) {
+    if (profile.name) return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/onboarding" replace />;
+  }
+
+  return <Landing />;
+}
+
 export default function App() {
   // Safe fallback if client ID is missing or placeholder
   // @ts-ignore
@@ -60,7 +73,7 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* State 1: Logged Out (Auth Screen) */}
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<ProtectedRoot />} />
             
             {/* State 2: Logged In, Profile Incomplete */}
             <Route path="/onboarding" element={<ProtectedOnboarding />} />

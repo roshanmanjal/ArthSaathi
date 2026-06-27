@@ -112,24 +112,42 @@ export default function ScamShield() {
                 }}>{ex.label}</button>
               ))}
             </div>
-            <button
-              onClick={() => analyze()}
-              disabled={!input.trim() || loading}
-              style={{
-                marginTop: 14, width: '100%', padding: '13px',
-                background: loading || !input.trim() ? 'var(--surface-3)' : 'linear-gradient(135deg, #ef4444, #dc2626)',
-                border: 'none', borderRadius: 12,
-                color: loading || !input.trim() ? 'var(--text-dim)' : 'white',
-                fontWeight: 600, fontSize: 15, cursor: input.trim() ? 'pointer' : 'not-allowed',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                boxShadow: input.trim() && !loading ? '0 0 20px rgba(239,68,68,0.3)' : 'none',
-                transition: 'all 0.2s',
-              }}
-            >
-              {loading
-                ? <><Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> Analyzing...</>
-                : <><ShieldAlert size={18} /> Analyze for Scam</>}
-            </button>
+            <div style={{ display: 'flex', gap: 12, marginTop: 14 }}>
+              <button
+                onClick={() => {
+                  setInput("Dear customer, your SBI account will be blocked today. Update KYC via this link immediately: http://sbi-update-kyc.in");
+                  analyze("Dear customer, your SBI account will be blocked today. Update KYC via this link immediately: http://sbi-update-kyc.in");
+                }}
+                style={{
+                  flex: 1, padding: '13px',
+                  background: 'var(--surface-3)', border: '1px solid var(--border)', borderRadius: 12,
+                  color: 'var(--text)', fontWeight: 600, fontSize: 15, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  transition: 'all 0.2s',
+                }}
+              >
+                <AlertTriangle size={18} /> Upload Image (Demo)
+              </button>
+              
+              <button
+                onClick={() => analyze()}
+                disabled={!input.trim() || loading}
+                style={{
+                  flex: 2, padding: '13px',
+                  background: loading || !input.trim() ? 'var(--surface-3)' : 'linear-gradient(135deg, #ef4444, #dc2626)',
+                  border: 'none', borderRadius: 12,
+                  color: loading || !input.trim() ? 'var(--text-dim)' : 'white',
+                  fontWeight: 600, fontSize: 15, cursor: input.trim() ? 'pointer' : 'not-allowed',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  boxShadow: input.trim() && !loading ? '0 0 20px rgba(239,68,68,0.3)' : 'none',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {loading
+                  ? <><Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> Analyzing...</>
+                  : <><ShieldAlert size={18} /> Analyze for Scam</>}
+              </button>
+            </div>
           </div>
 
           <AnimatePresence>

@@ -125,11 +125,13 @@ export default function FinancialHealth() {
   const budgetScore = expenses > 0 ? (income > expenses ? 85 : 40) : 50;
   const emergencyScore = goals.some(g => g.name.toLowerCase().includes('emergency')) ? 80 : 30;
   
-  const overallScore = Math.round((savingsScore + budgetScore + emergencyScore + 80 + 50 + 75 + 60) / 7);
-  const gradeLabel = overallScore >= 80 ? 'Excellent' : overallScore >= 65 ? 'Good' : overallScore >= 50 ? 'Fair' : 'Needs Work';
-  const gradeColor = overallScore >= 80 ? 'var(--success)' : overallScore >= 65 ? 'var(--primary)' : overallScore >= 50 ? 'var(--warning)' : 'var(--danger)';
+  const hasEnoughData = transactions.length > 0;
+  
+  const overallScore = hasEnoughData ? Math.round((savingsScore + budgetScore + emergencyScore + 80 + 50 + 75 + 60) / 7) : 0;
+  const gradeLabel = !hasEnoughData ? 'No Data' : overallScore >= 80 ? 'Excellent' : overallScore >= 65 ? 'Good' : overallScore >= 50 ? 'Fair' : 'Needs Work';
+  const gradeColor = !hasEnoughData ? 'var(--text-muted)' : overallScore >= 80 ? 'var(--success)' : overallScore >= 65 ? 'var(--primary)' : overallScore >= 50 ? 'var(--warning)' : 'var(--danger)';
 
-  const computedBreakdown = [
+  const computedBreakdown = hasEnoughData ? [
     { label: 'Savings Rate', score: Math.round(savingsScore), max: 100, tip: 'Save at least 20% of income' },
     { label: 'Debt Management', score: 80, max: 100, tip: 'Keep debt low' },
     { label: 'Emergency Fund', score: emergencyScore, max: 100, tip: 'Build 6 months of expenses' },
@@ -137,7 +139,7 @@ export default function FinancialHealth() {
     { label: 'Investment Portfolio', score: 50, max: 100, tip: 'Start investing' },
     { label: 'Scam Awareness', score: 75, max: 100, tip: 'Stay vigilant' },
     { label: 'Financial Knowledge', score: 60, max: 100, tip: 'Complete more lessons' },
-  ];
+  ] : emptyHealthScoreBreakdown;
 
   function generateReport() {
     setLoading(true);

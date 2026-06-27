@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth, useProfile, useTransactions, useGoals, useLearning } from '../store/useAppStore';
+import { useAuth, useProfile, useTransactions } from '../store/useAppStore';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Mail, ChevronRight, BarChart3, TrendingUp, ShieldCheck } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
@@ -38,8 +38,6 @@ export default function Landing() {
   const rehydrateAllStores = () => {
     useProfile.persist.rehydrate();
     useTransactions.persist.rehydrate();
-    useGoals.persist.rehydrate();
-    useLearning.persist.rehydrate();
   };
 
   const handleGoogleSuccess = async (credentialResponse: any) => {

@@ -161,7 +161,7 @@ export default function FinancialHealth() {
 
       {/* Hero score */}
       <div className="card" style={{ padding: 32, marginBottom: 20, background: 'linear-gradient(135deg, rgba(16,185,129,0.06), rgba(59,130,246,0.06))', border: '1px solid rgba(16,185,129,0.15)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
+        <div className="mobile-col" style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
           <ScoreRing score={overallScore} />
           <div style={{ flex: 1 }}>
             <div className="font-display" style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>

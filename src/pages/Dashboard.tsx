@@ -63,7 +63,7 @@ export default function Dashboard() {
     <motion.div variants={container} initial="hidden" animate="show" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       
       {/* Header */}
-      <motion.div variants={item} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <motion.div variants={item} className="mobile-col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
         <div>
           <h1 className="font-display" style={{ fontSize: 28, fontWeight: 700, marginBottom: 4 }}>Overview</h1>
           <p style={{ color: 'var(--text-muted)' }}>Here is what's happening with your finances this month.</p>
@@ -115,7 +115,7 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Charts Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
+      <div className="mobile-grid-1" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
         
         <motion.div variants={item} className="card" style={{ padding: 24 }}>
           <h3 className="font-display" style={{ fontSize: 18, fontWeight: 600, marginBottom: 24 }}>Balance Trend</h3>

@@ -21,7 +21,7 @@ export default function Sidebar() {
   const navigate = useNavigate();
 
   return (
-    <aside style={{
+    <aside className="hide-on-mobile" style={{
       width: 220,
       minHeight: '100vh',
       background: 'var(--surface-1)',

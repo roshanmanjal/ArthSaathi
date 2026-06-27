@@ -90,7 +90,7 @@ export default function Budget() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, marginBottom: 18 }}>
+      <div className="mobile-grid-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, marginBottom: 18 }}>
         <div className="card" style={{ padding: 22 }}>
           <div className="font-display" style={{ fontSize: 15, fontWeight: 600, marginBottom: 18 }}>6-Month Overview</div>
           <div style={{ height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: 13, flexDirection: 'column' }}>
@@ -115,7 +115,7 @@ export default function Budget() {
           </div>
           
           {categoryBreakdown.length > 0 ? (
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            <div className="mobile-col" style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
               <PieChart width={140} height={140}>
                 <Pie data={categoryBreakdown} cx={65} cy={65} innerRadius={40} outerRadius={65} dataKey="amount" paddingAngle={4}>
                   {categoryBreakdown.map((c, i) => <Cell key={i} fill={c.color} />)}

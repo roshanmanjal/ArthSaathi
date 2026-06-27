@@ -135,3 +135,85 @@ input:focus, select:focus, textarea:focus {
   animation: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   border-radius: 8px;
 }
+
+/* --- MOBILE RESPONSIVENESS --- */
+.mobile-nav-bottom {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+  
+  .mobile-col {
+    flex-direction: column !important;
+  }
+  
+  .mobile-grid-1 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mobile-nav-bottom {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: var(--surface-1);
+    border-top: 1px solid var(--border);
+    z-index: 100;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+    font-size: 11px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  
+  .mobile-nav-item.active {
+    color: var(--primary);
+  }
+
+  /* Padding adjustments for main content to account for bottom nav */
+  .app-main-content {
+    margin-left: 0 !important;
+    padding-bottom: 90px !important; 
+  }
+  
+  .app-header {
+    padding: 0 16px !important;
+  }
+  
+  .card {
+    padding: 16px !important;
+  }
+  
+  .landing-hero {
+    flex-direction: column !important;
+    text-align: center;
+    padding-top: 40px !important;
+  }
+  
+  .landing-hero > div {
+    align-items: center !important;
+  }
+  
+  .onboarding-card {
+    width: 100% !important;
+    padding: 20px !important;
+    border-radius: 0 !important;
+    min-height: 100vh;
+  }
+}
+

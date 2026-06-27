@@ -63,7 +63,7 @@ export default function Onboarding() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="card" style={{ width: 500, padding: 40, position: 'relative' }}>
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="card onboarding-card" style={{ width: 500, padding: 40, position: 'relative' }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <h2 className="font-display" style={{ fontSize: 28, fontWeight: 700, marginBottom: 8, color: 'var(--text)' }}>Complete Your Profile</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: 15 }}>Let's personalize your financial journey.</p>

@@ -107,7 +107,7 @@ export default function Landing() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', padding: 24, overflow: 'hidden' }}>
-      <div style={{ display: 'flex', width: '100%', maxWidth: 1000, minHeight: 600, background: '#0a0a0a', borderRadius: 24, overflow: 'hidden', border: '1px solid var(--border)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
+      <div className="landing-hero" style={{ display: 'flex', width: '100%', maxWidth: 1000, minHeight: 600, background: '#0a0a0a', borderRadius: 24, overflow: 'hidden', border: '1px solid var(--border)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
       
       {/* LEFT SIDE - Animated Branding */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '60px', position: 'relative', overflow: 'hidden' }}>

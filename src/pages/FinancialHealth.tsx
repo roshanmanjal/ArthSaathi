@@ -116,16 +116,20 @@ export default function FinancialHealth() {
   const [loading, setLoading] = useState(false);
 
   // Dynamic Computation
-  const income = Number(profile.income) || 0;
-  const expenses = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+  const safeTransactions = transactions || [];
+  const safeGoals = goals || [];
+  const safeProfile = profile || { income: 0, name: '' };
+
+  const income = Number(safeProfile.income) || 0;
+  const expenses = safeTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
   const savings = income - expenses;
   const savingsRate = income > 0 ? (savings / income) * 100 : 0;
   
   const savingsScore = Math.min(100, Math.max(0, savingsRate * 3));
   const budgetScore = expenses > 0 ? (income > expenses ? 85 : 40) : 50;
-  const emergencyScore = goals.some(g => g.name.toLowerCase().includes('emergency')) ? 80 : 30;
+  const emergencyScore = safeGoals.some(g => g.name.toLowerCase().includes('emergency')) ? 80 : 30;
   
-  const hasEnoughData = transactions.length > 0;
+  const hasEnoughData = safeTransactions.length > 0;
   
   const overallScore = hasEnoughData ? Math.round((savingsScore + budgetScore + emergencyScore + 80 + 50 + 75 + 60) / 7) : 0;
   const gradeLabel = !hasEnoughData ? 'No Data' : overallScore >= 80 ? 'Excellent' : overallScore >= 65 ? 'Good' : overallScore >= 50 ? 'Fair' : 'Needs Work';

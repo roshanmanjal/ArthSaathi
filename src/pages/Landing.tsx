@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '../store/useAppStore';
+import { useAuth, useProfile, useTransactions, useGoals, useLearning } from '../store/useAppStore';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Mail, ChevronRight, BarChart3, TrendingUp, ShieldCheck } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
@@ -33,8 +33,14 @@ export default function Landing() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-
   const [isAuthLoading, setIsAuthLoading] = useState(false);
+
+  const rehydrateAllStores = () => {
+    useProfile.persist.rehydrate();
+    useTransactions.persist.rehydrate();
+    useGoals.persist.rehydrate();
+    useLearning.persist.rehydrate();
+  };
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     setIsAuthLoading(true);
@@ -46,6 +52,7 @@ export default function Landing() {
       const existingUser = MockDB.getUserByEmail(email);
       if (existingUser) {
         MockDB.restoreSessionSnapshots(email);
+        rehydrateAllStores();
         signIn(existingUser as any);
         if (existingUser.onboarding_completed) {
           navigate('/dashboard');
@@ -81,6 +88,7 @@ export default function Landing() {
     if (authState === 'email-signin') {
       if (existingUser) {
         MockDB.restoreSessionSnapshots(email);
+        rehydrateAllStores();
         signIn(existingUser as any);
         if (existingUser.onboarding_completed) {
           navigate('/dashboard');

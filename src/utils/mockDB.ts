@@ -75,16 +75,21 @@ export const MockDB = {
   saveSessionSnapshots: (email: string) => {
     console.log(`[DB] Saving session snapshots to database for ${email}`);
     try {
-      const profile = JSON.parse(localStorage.getItem('as_profile') || '{}');
-      const transactions = JSON.parse(localStorage.getItem('as_transactions') || '{}');
-      const goals = JSON.parse(localStorage.getItem('as_goals') || '{}');
-      const learning = JSON.parse(localStorage.getItem('as_lessonProgress') || '{}');
+      const getSafeItem = (key: string) => {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : null;
+      };
+
+      const profile = getSafeItem('as_profile');
+      const transactions = getSafeItem('as_transactions');
+      const goals = getSafeItem('as_goals');
+      const learning = getSafeItem('as_lessonProgress');
 
       MockDB.updateUser(email, {
-        profileSnapshot: profile,
-        transactionsSnapshot: transactions,
-        goalsSnapshot: goals,
-        learningSnapshot: learning
+        ...(profile && { profileSnapshot: profile }),
+        ...(transactions && { transactionsSnapshot: transactions }),
+        ...(goals && { goalsSnapshot: goals }),
+        ...(learning && { learningSnapshot: learning })
       });
     } catch (e) {
       console.error('[DB] Failed to save session snapshots', e);

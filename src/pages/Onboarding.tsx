@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth, useProfile, useTransactions } from '../store/useAppStore';
 import { motion } from 'framer-motion';
 import { User, Mail, Calendar, Briefcase, DollarSign, TrendingDown, Target, Globe } from 'lucide-react';
+import { MockDB } from '../utils/mockDB';
 
 export default function Onboarding() {
   const { user } = useAuth();
@@ -47,6 +48,14 @@ export default function Onboarding() {
       }
       
       setTimeout(() => {
+        if (user?.email) {
+          try {
+            MockDB.updateUser(user.email, { onboarding_completed: true });
+            MockDB.saveSessionSnapshots(user.email);
+          } catch (e) {
+            console.error('[Onboarding] Failed to update MockDB', e);
+          }
+        }
         navigate('/dashboard', { replace: true });
       }, 50);
     }

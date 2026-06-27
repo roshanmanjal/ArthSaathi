@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Zap, Mail, ChevronRight, BarChart3, TrendingUp, ShieldCheck } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import { MockDB } from '../utils/mockDB';
 
 interface GoogleJwtPayload {
   sub: string;
@@ -37,25 +38,36 @@ export default function Landing() {
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     setIsAuthLoading(true);
-    // Simulate slight network delay for better UX
     await new Promise(r => setTimeout(r, 600));
     if (credentialResponse.credential) {
       const decoded = jwtDecode<GoogleJwtPayload>(credentialResponse.credential);
-      signIn({
-        id: decoded.sub,
-        name: decoded.name,
-        email: decoded.email,
-        avatar: decoded.picture,
-        provider: 'google',
-        joinedAt: new Date().toISOString()
-      });
-      navigate('/onboarding');
+      const email = decoded.email;
+      
+      const existingUser = MockDB.getUserByEmail(email);
+      if (existingUser) {
+        MockDB.restoreSessionSnapshots(email);
+        signIn(existingUser as any);
+        if (existingUser.onboarding_completed) {
+          navigate('/dashboard');
+        } else {
+          navigate('/onboarding');
+        }
+      } else {
+        const newUser = MockDB.createUser({
+          id: decoded.sub,
+          name: decoded.name,
+          email: decoded.email,
+          avatar: decoded.picture,
+          provider: 'google',
+        });
+        signIn(newUser as any);
+        navigate('/onboarding');
+      }
     }
     setIsAuthLoading(false);
   };
 
   const handleGoogleError = () => {
-    // If it fails (e.g., missing API key), fallback to email auth gracefully
     setAuthState('email-signin');
   };
 
@@ -63,15 +75,34 @@ export default function Landing() {
     e.preventDefault();
     setIsAuthLoading(true);
     await new Promise(r => setTimeout(r, 600));
-    signIn({
-      id: `usr_${Date.now()}`,
-      name: authState === 'email-signup' ? name : '', 
-      email: email,
-      avatar: '',
-      provider: 'email',
-      joinedAt: new Date().toISOString()
-    });
-    navigate('/onboarding');
+    
+    const existingUser = MockDB.getUserByEmail(email);
+    
+    if (authState === 'email-signin') {
+      if (existingUser) {
+        MockDB.restoreSessionSnapshots(email);
+        signIn(existingUser as any);
+        if (existingUser.onboarding_completed) {
+          navigate('/dashboard');
+        } else {
+          navigate('/onboarding');
+        }
+      } else {
+        // Fallback for demo: auto-create if they try to sign in and don't exist
+        const newUser = MockDB.createUser({ id: `usr_${Date.now()}`, email, provider: 'email' });
+        signIn(newUser as any);
+        navigate('/onboarding');
+      }
+    } else if (authState === 'email-signup') {
+      if (existingUser) {
+        alert('User already exists! Please sign in.');
+      } else {
+        const newUser = MockDB.createUser({ id: `usr_${Date.now()}`, email, name, provider: 'email' });
+        signIn(newUser as any);
+        navigate('/onboarding');
+      }
+    }
+
   };
 
   return (

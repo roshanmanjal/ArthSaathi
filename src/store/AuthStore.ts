@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { MockDB } from '../utils/mockDB';
 
 export interface AuthUser {
   id: string;
@@ -19,11 +20,20 @@ interface AuthState {
 
 export const useAuth = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       isAuthenticated: false,
       signIn: (userData) => set({ user: userData, isAuthenticated: true }),
       signOut: () => {
+        const currentUser = get().user;
+        if (currentUser?.email) {
+          try {
+            MockDB.saveSessionSnapshots(currentUser.email);
+          } catch (e) {
+            console.error('[AuthStore] Failed to save session on logout', e);
+          }
+        }
+        
         // Clear all app data on sign out
         Object.keys(localStorage).forEach(key => {
           if (key.startsWith('as_')) {
